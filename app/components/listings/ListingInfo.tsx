@@ -51,7 +51,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
         if (str === undefined || str === null) {
           return NaN; // or any other appropriate value for your use case
         }
-        return parseFloat(str);
+        return parseFloat(String(str));
       });
       
 

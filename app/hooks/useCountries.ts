@@ -22,7 +22,7 @@ const formattedCities = (countryCode: string, stateCode: string) => {
         value: city.name,
         countryCode: city.countryCode,
         stateCode: city.stateCode,
-        latlng: [city.latitude, city.longitude],
+        latlng: [Number(city.latitude), Number(city.longitude)],
     }));
 };
 
