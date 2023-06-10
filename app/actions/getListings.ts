@@ -17,7 +17,7 @@ export default async function getListings(
     try {
         const { 
             // userId,
-            userId = null,
+            userId ,
             passengerCount,
             doorCount,
             mileCount,
