@@ -20,12 +20,34 @@ import {Range} from "react-date-range";
 
 import emailjs from 'emailjs-com';
 
+import MyPdfDocument from "./MyPdfDocument";
+import { saveAs } from "file-saver";
+import { pdf } from "@react-pdf/renderer";
+
+import QRCode from 'qrcode';
+
+const generateQRCodeBase64 = async (text: string): Promise<string> => {
+    try {
+      const qrCodeDataURL = await QRCode.toDataURL(text);
+      console.log('Generated QR code:', qrCodeDataURL); 
+      return qrCodeDataURL;
+    } catch (error) {
+      console.error('Failed to generate QR code:', error);
+      return '';
+    }
+  };
 
 const initialDateRange = {
     startDate: new Date(),
     endDate: new Date(),
     key: 'selection'
 };
+
+interface CustomReservation {
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+    totalPrice: number;
+  }
 
 interface ListingClientProps {
     reservations?: SafeReservation[];
@@ -62,6 +84,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
     const [isLoading, setIsLoading] = useState(false); 
     const [totalPrice, setTotalPrice] = useState(listing.price);
     const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+    const [qrCodeBase64, setQrCodeBase64] = useState('');
+
+    useEffect(() => {
+        generateQRCodeBase64(listing.id).then((generatedQrCode) => {
+          console.log('Setting qrCodeBase64:', generatedQrCode); 
+          setQrCodeBase64(generatedQrCode);
+        });
+      }, [listing.id]);
 
     const sendEmailToOwner = () => {
         const templateParams = {
@@ -102,41 +132,93 @@ const ListingClient: React.FC<ListingClientProps> = ({
       };
       
       
-
-    const onCreateReservation = useCallback(() => {
+      const onCreateReservation = useCallback(() => {
         if (!currentUser) {
-            return loginModal.onOpen();
+          return loginModal.onOpen();
         }
-
+      
         setIsLoading(true);
-
-        axios.post('/api/reservations', {
+      
+        axios
+          .post("/api/reservations", {
             totalPrice,
             startDate: dateRange.startDate,
             endDate: dateRange.endDate,
-            listingId: listing?.id
-        })
-        .then(() => {           
+            listingId: listing?.id,
+          })
+          .then(async (response) => {
+
+            const createdReservation: CustomReservation = {
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+                totalPrice: totalPrice,
+              };
+      
+            // Generate and download the PDF
+            const blob = await pdf(
+              <MyPdfDocument
+                reservation={createdReservation}
+                currentUser={currentUser}
+                listing={listing}
+                qrCode={qrCodeBase64}
+              />
+            ).toBlob();
+            saveAs(blob, "ReservationConfirmation.pdf");
+      
             sendEmailToOwner();
-            toast.success('Listing reserved!');
+            toast.success("Listing reserved!");
             setDateRange(initialDateRange);
             // redirect to /rentals
             router.refresh();
-        })
-        .catch(() => {
-            toast.error('Something went wrong.');
-        })
-        .finally(() => {
+          })
+          .catch(() => {
+            toast.error("Something went wrong.");
+          })
+          .finally(() => {
             setIsLoading(false);
-        })
-    }, [
+          });
+      }, [
         totalPrice,
         dateRange,
         listing?.id,
         router,
         currentUser,
-        loginModal
-    ]);
+        loginModal,
+      ]);
+    // const onCreateReservation = useCallback(() => {
+    //     if (!currentUser) {
+    //         return loginModal.onOpen();
+    //     }
+
+    //     setIsLoading(true);
+
+    //     axios.post('/api/reservations', {
+    //         totalPrice,
+    //         startDate: dateRange.startDate,
+    //         endDate: dateRange.endDate,
+    //         listingId: listing?.id
+    //     })
+    //     .then(() => {           
+    //         sendEmailToOwner();       
+    //         toast.success('Listing reserved!');
+    //         setDateRange(initialDateRange);
+    //         // redirect to /rentals
+    //         router.refresh();
+    //     })
+    //     .catch(() => {
+    //         toast.error('Something went wrong.');
+    //     })
+    //     .finally(() => {
+    //         setIsLoading(false);
+    //     })
+    // }, [
+    //     totalPrice,
+    //     dateRange,
+    //     listing?.id,
+    //     router,
+    //     currentUser,
+    //     loginModal
+    // ]);
 
     useEffect(() => {
         if (dateRange.startDate && dateRange.endDate) {
