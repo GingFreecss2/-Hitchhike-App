@@ -18,6 +18,9 @@ import ListingReservation from "@/app/components/listings/ListingReservation";
 
 import {Range} from "react-date-range";
 
+import emailjs from 'emailjs-com';
+
+
 const initialDateRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -60,6 +63,46 @@ const ListingClient: React.FC<ListingClientProps> = ({
     const [totalPrice, setTotalPrice] = useState(listing.price);
     const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
+    const sendEmailToOwner = () => {
+        const templateParams = {
+          to_name: listing.user.name,
+          to_email: listing.user.email,
+          from_name: currentUser?.name || 'Anonymous',
+          from_email: currentUser?.email || 'Not provided',
+          listing_title: listing.title,
+          message: `Hello ${listing.user.name},
+
+          A reservation has been made for your listing "${listing.title}" by ${currentUser?.name || 'Anonymous'} (email: ${currentUser?.email || 'Not provided'}).
+          
+          Please check your dashboard for more details about the reservation and to manage it accordingly.
+          
+          Thank you for using our platform!
+          
+          Sincerely,
+          
+          Hitchhike Support Team.`,
+        };
+      
+        emailjs
+          .send(
+            'service_f1f66jd',
+            'template_eov7ela',
+            templateParams,
+            process.env.NEXT_PUBLIC_EMAILJS_USER_ID // Use the environment variable here
+          )
+          .then(
+            (result) => {
+              console.log('Email sent successfully!', result);
+              console.log('Template Params:', templateParams);
+            },
+            (error) => {
+              console.error('Failed to send email:', error);
+            }
+          );
+      };
+      
+      
+
     const onCreateReservation = useCallback(() => {
         if (!currentUser) {
             return loginModal.onOpen();
@@ -73,7 +116,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
             endDate: dateRange.endDate,
             listingId: listing?.id
         })
-        .then(() => {
+        .then(() => {           
+            sendEmailToOwner();
             toast.success('Listing reserved!');
             setDateRange(initialDateRange);
             // redirect to /rentals
