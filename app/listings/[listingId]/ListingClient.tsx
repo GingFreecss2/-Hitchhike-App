@@ -185,40 +185,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         currentUser,
         loginModal,
       ]);
-    // const onCreateReservation = useCallback(() => {
-    //     if (!currentUser) {
-    //         return loginModal.onOpen();
-    //     }
 
-    //     setIsLoading(true);
-
-    //     axios.post('/api/reservations', {
-    //         totalPrice,
-    //         startDate: dateRange.startDate,
-    //         endDate: dateRange.endDate,
-    //         listingId: listing?.id
-    //     })
-    //     .then(() => {           
-    //         sendEmailToOwner();       
-    //         toast.success('Listing reserved!');
-    //         setDateRange(initialDateRange);
-    //         // redirect to /rentals
-    //         router.refresh();
-    //     })
-    //     .catch(() => {
-    //         toast.error('Something went wrong.');
-    //     })
-    //     .finally(() => {
-    //         setIsLoading(false);
-    //     })
-    // }, [
-    //     totalPrice,
-    //     dateRange,
-    //     listing?.id,
-    //     router,
-    //     currentUser,
-    //     loginModal
-    // ]);
 
     useEffect(() => {
         if (dateRange.startDate && dateRange.endDate) {

@@ -155,7 +155,7 @@ const MyPdfDocument: React.FC<MyPdfDocumentProps> = ({ reservation, currentUser,
       </View>
       <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
        <QrCode value={listing.id} size={200} />
-       {qrCode && <Image src={qrCode} style={{ width: 150, height: 150 }}/>}
+       {qrCode && <Image src={qrCode} style={{ width: 200, height: 200 }}/>}
       </View>
     </Page>
   </Document>
