@@ -1,34 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hitchhike - Car Sharing Marketplace
 
-## Getting Started
+![Hitchhike Logo](/public/readme/logo.png)
 
-First, run the development server:
+## Introduction
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Hitchhike is a dynamic car-sharing marketplace designed to facilitate the seamless exchange of cars between users. This platform boasts a stunning UI, smooth UX, and a rich set of features to cater to all your car-sharing needs.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **User Authentication:** Users can create accounts or log in using Google or GitHub accounts for a hassle-free experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Car Listings:** Users can add their cars to the platform, making them available for rent by other members.
 
-## Learn More
+- **Rental Confirmation:** After booking a car, users receive confirmation via email and a PDF with a QR code.
 
-To learn more about Next.js, take a look at the following resources:
+- **Favorites:** Users can bookmark their preferred cars for quick access.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Filtering:** The platform allows users to filter cars based on type.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Search Functionality:** Users can search for cars based on location, date, or car details.
 
-## Deploy on Vercel
+- **Reservation Management:** Users can cancel their own reservations or remove other people's reservations on their cars.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Car Removal:** If users wish, they can remove their cars from the platform.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Reservation Lock:** Dates already reserved for a car cannot be booked by other users.
+
+- **Image Storage:** We use Cloudinary CDN to efficiently store car images.
+
+## Live Demo
+
+Check out our live demo to explore Hitchhike in action: [Live Demo](https://hitchhike-car-marketplace.vercel.app/)
+
+## Screenshots
+
+### Home Page
+![Home Page](/public/readme/home.png)
+
+### Car Details
+![Car Details](/public/readme/car-page.png)
+
+## Tech Stack
+
+Hitchhike is built with the following technologies:
+
+- Next.js
+- TypeScript
+- MongoDB
+- Tailwind CSS
+- Cloudinary CDN
+- Prisma ORM
+
+
