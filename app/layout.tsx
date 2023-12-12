@@ -15,6 +15,7 @@ import getCurrentUser from "./actions/getCurrentUser";
 export const metadata = {
   title: 'Hitchhike',
   description: 'Car Sharing Marketplace',
+  imageUrl: 'public/images/og.png',
 }
 
 const font = Nunito ({
